@@ -1,0 +1,447 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fashion & Beauty Store</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial;
+            background-color: purple;
+            padding: 25px;
+        }
+
+        h1 {
+            text-align: center;
+            color: darkred;
+            margin-bottom: 30px;
+        }
+
+        #search {
+            display: block;
+            width: 300px;
+            padding: 12px;
+            margin: 20px auto;
+            border: 1px solid gray;
+            border-radius: 8px;
+        }
+
+        #product {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+
+        /* Product Card */
+
+        .card {
+            background-color: #fff0f5;
+            padding: 20px;
+            text-align: center;
+            border-radius: 15px;
+            box-shadow: 0 4px 12px #888;
+            border: 2px solid #f8bbd0;
+        }
+
+        .card img {
+            width: 150px;
+            height: 150px;
+            object-fit: contain;
+            border-radius: 10px;
+            margin-bottom: 10px;
+        }
+
+        .card h3 {
+            color: #880e4f;
+            font-size: 21px;
+            margin: 12px 0;
+            font-weight: bold;
+        }
+
+        .card p {
+            color: #6a1b4d;
+            font-size: 15px;
+            margin: 8px 0;
+        }
+
+        .card p:first-of-type {
+            color: #c2185b;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .card p:last-of-type {
+            color: #795548;
+            font-weight: 600;
+        }
+
+        button {
+            background-color: darkred;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            margin: 5px;
+        }
+
+        #cart {
+            background-color: white;
+            padding: 20px;
+            margin-top: 40px;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .cart-item {
+            background-color: #ffe4e9;
+            padding: 15px;
+            margin: 10px;
+            border-radius: 10px;
+        }
+
+        #total {
+            margin-top: 20px;
+            color: darkred;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <h1>Fashion & Beauty Store</h1>
+
+    <input type="text" id="search" placeholder="Search Products">
+
+    <div id="product"></div>
+
+    <div id="cart">
+
+        <h2>My Cart</h2>
+
+        <div id="cartitems"></div>
+
+        <h3 id="total">Total: ₹0</h3>
+
+    </div>
+
+    <script>
+
+        let g = document.querySelector("h1");
+        let search = document.getElementById("search");
+        let s = document.getElementById("product");
+        let p = document.getElementById("cart");
+        let cartitems = document.getElementById("cartitems");
+        let n = document.getElementById("total");
+
+        let product = [
+
+            {
+                id: 1,
+                name: "Eyeliner",
+                image: "eye.webp",
+                price: 200,
+                category: "Makeup"
+            },
+
+            {
+                id: 2,
+                name: "Lipstick",
+                image: "lipstick.jpg",
+                price: 100,
+                category: "Makeup"
+            },
+
+            {
+                id: 3,
+                name: "Kurti",
+                image: "kurti.png",
+                price: 250,
+                category: "Dress"
+            },
+
+            {
+                id: 4,
+                name: "Western Dress",
+                image: "western.webp",
+                price: 300,
+                category: "Dress"
+            },
+
+            {
+                id: 5,
+                name: "Heels",
+                image: "heels.png",
+                price: 500,
+                category: "Footwear"
+            },
+
+            {
+                id: 6,
+                name: "Shoes",
+                image: "shoes.avif",
+                price: 400,
+                category: "Footwear"
+            },
+
+            {
+                id: 7,
+                name: "Handbag",
+                image: "hand.jpg",
+                price: 900,
+                category: "Bags"
+            },
+
+            {
+                id: 8,
+                name: "School Bag",
+                image: "sclbag.webp",
+                price: 700,
+                category: "Bags"
+            }
+
+        ];
+
+        let cart = [];
+
+       
+
+        function displayproduct(data) {
+
+            let output = "";
+
+            data.forEach(function(item) {
+
+                output += `
+                    <div class="card">
+
+                        <img src="${item.image}">
+
+                        <h3>${item.name}</h3>
+
+                        <p>Price: ₹${item.price}</p>
+
+                        <p>Category: ${item.category}</p>
+
+                        <button onclick="addToCart(${item.id})">
+                            Add To Cart
+                        </button>
+
+                    </div>
+                `;
+
+            });
+
+            s.innerHTML = output || "No Products Found";
+
+            applyStyle();
+
+        }
+
+      
+
+        function addToCart(id) {
+
+            let item = product.find(function(p) {
+                return p.id === id;
+            });
+
+            let existing = cart.find(function(p) {
+                return p.id === id;
+            });
+
+            if (existing) {
+
+                existing.quantity++;
+
+            } else {
+
+                cart.push({
+                    ...item,
+                    quantity: 1
+                });
+
+            }
+
+            displayCart();
+
+        }
+
+     
+
+        function displayCart() {
+
+            let output = "";
+            let total = 0;
+
+            cart.forEach(function(item) {
+
+                let subtotal = item.price * item.quantity;
+
+                total += subtotal;
+
+                output += `
+                    <div class="cart-item">
+
+                        <h3>${item.name}</h3>
+
+                        <p>Price: ₹${item.price}</p>
+
+                        <p>Quantity: ${item.quantity}</p>
+
+                        <p>Subtotal: ₹${subtotal}</p>
+
+                        <button onclick="increase(${item.id})">+</button>
+
+                        <button onclick="decrease(${item.id})">-</button>
+
+                        <button onclick="removeItem(${item.id})">
+                            Remove
+                        </button>
+
+                    </div>
+                `;
+
+            });
+
+            cartitems.innerHTML = output || "Your cart is empty";
+
+            n.innerHTML = "Total: ₹" + total;
+
+            applyStyle();
+
+        }
+
+       
+
+        function increase(id) {
+
+            let item = cart.find(function(p) {
+                return p.id === id;
+            });
+
+            if (item) {
+                item.quantity++;
+            }
+
+            displayCart();
+
+        }
+
+     
+        function decrease(id) {
+
+            let item = cart.find(function(p) {
+                return p.id === id;
+            });
+
+            if (item && item.quantity > 1) {
+                item.quantity--;
+            }
+
+            displayCart();
+
+        }
+
+      
+
+        function removeItem(id) {
+
+            cart = cart.filter(function(item) {
+                return item.id !== id;
+            });
+
+            displayCart();
+
+        }
+
+       
+
+        function searchProduct() {
+
+            let value = search.value.toLowerCase();
+
+            let filtered = product.filter(function(item) {
+
+                return item.name.toLowerCase().includes(value);
+
+            });
+
+            displayproduct(filtered);
+
+        }
+
+        search.addEventListener("input", searchProduct);
+
+     
+
+        function applyStyle() {
+
+            g.style.letterSpacing = "2px";
+
+            search.style.backgroundColor = "#fffafa";
+            search.style.fontSize = "16px";
+
+            let cards = document.querySelectorAll(".card");
+
+            cards.forEach(function(card) {
+
+                card.style.transition = "0.3s";
+                card.style.border = "2px solid #f8bbd0";
+
+            });
+
+            let images = document.querySelectorAll(".card img");
+
+            images.forEach(function(img) {
+
+                img.style.borderRadius = "10px";
+                img.style.marginBottom = "10px";
+
+            });
+
+            let buttons = document.querySelectorAll("button");
+
+            buttons.forEach(function(btn) {
+
+                btn.style.fontSize = "14px";
+                btn.style.transition = "0.3s";
+
+            });
+
+            p.style.border = "2px solid pink";
+
+            let cartbox = document.querySelectorAll(".cart-item");
+
+            cartbox.forEach(function(item) {
+
+                item.style.borderLeft = "5px solid darkred";
+                item.style.fontWeight = "bold";
+
+            });
+
+            n.style.padding = "12px";
+            n.style.backgroundColor = "#fce4ec";
+
+        }
+
+        displayproduct(product);
+        displayCart();
+
+    </script>
+
+</body>
+</html>

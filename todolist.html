@@ -1,0 +1,206 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Details</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, lavender, #c084fc);
+            min-height: 100vh;
+            padding: 40px 15px;
+        }
+
+        .container {
+            max-width: 450px;
+            margin: auto;
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+        }
+
+        .heading {
+            text-align: center;
+            color: purple;
+            margin-bottom: 25px;
+        }
+
+        .input-box {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 15px;
+            border: 2px solid #d8b4fe;
+            border-radius: 8px;
+            outline: none;
+            font-size: 15px;
+        }
+
+        .input-box:focus {
+            border-color: purple;
+        }
+
+        .add-btn {
+            width: 100%;
+            padding: 12px;
+            background: purple;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .add-btn:hover {
+            background: #6b21a8;
+        }
+
+        .student-list {
+            margin-top: 25px;
+        }
+
+        .student-card {
+            background: #f3e8ff;
+            border: 2px solid #c084fc;
+            padding: 18px;
+            margin-bottom: 15px;
+            border-radius: 12px;
+        }
+
+        .student-card p {
+            margin-bottom: 10px;
+            color: #4c1d95;
+            font-size: 15px;
+        }
+
+        .delete-btn {
+            background: #dc2626;
+            color: white;
+            border: none;
+            padding: 8px 18px;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .delete-btn:hover {
+            background: #991b1b;
+        }
+
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+
+        <h1 class="heading">STUDENT DETAILS</h1>
+
+        <input type="text" placeholder="Enter your name"
+        id="p1" class="input-box">
+
+        <input type="number" placeholder="Enter your age"
+        id="p2" class="input-box">
+
+        <input type="text" placeholder="Enter your course"
+        id="p3" class="input-box">
+
+        <button id="p4" class="add-btn">Add Student</button>
+
+        <div id="p5" class="student-list"></div>
+
+    </div>
+
+    <script>
+
+        let a = document.getElementById("p1");
+        let b = document.getElementById("p2");
+        let c = document.getElementById("p3");
+        let d = document.getElementById("p4");
+        let e = document.getElementById("p5");
+
+      
+
+        d.style.letterSpacing = "1px";
+
+        a.style.backgroundColor = "#faf5ff";
+        b.style.backgroundColor = "#faf5ff";
+        c.style.backgroundColor = "#faf5ff";
+
+        d.addEventListener("click", function() {
+
+            let name = a.value.trim();
+            let age = b.value.trim();
+            let course = c.value.trim();
+
+            if (name === "" || age === "" || course === "") {
+                alert("Please enter all details");
+                return;
+            }
+
+            if (Number(age) <= 0) {
+                alert("Please enter a valid age");
+                return;
+            }
+
+            let f = document.createElement("div");
+
+          
+
+            f.classList.add("student-card");
+
+          
+
+            f.style.transition = "0.3s";
+            f.style.boxShadow = "0 3px 10px rgba(0,0,0,0.1)";
+
+            let g = document.createElement("p");
+            g.textContent = "Name: " + name;
+
+            let h = document.createElement("p");
+            h.textContent = "Age: " + age;
+
+            let i = document.createElement("p");
+            i.textContent = "Course: " + course;
+
+            let j = document.createElement("button");
+
+            j.textContent = "Delete";
+
+            j.classList.add("delete-btn");
+
+            
+
+            j.style.fontWeight = "bold";
+
+            f.appendChild(g);
+            f.appendChild(h);
+            f.appendChild(i);
+            f.appendChild(j);
+
+            e.appendChild(f);
+
+            j.addEventListener("click", function() {
+                f.remove();
+            });
+
+            a.value = "";
+            b.value = "";
+            c.value = "";
+
+        });
+
+    </script>
+
+</body>
+</html>

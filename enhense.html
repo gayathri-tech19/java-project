@@ -1,0 +1,178 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Todo List</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(to right, lavender, #c084fc);
+            font-family: Arial;
+            padding: 30px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 450px;
+            margin: 50px auto;
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+        }
+
+        .heading {
+            text-align: center;
+            color: purple;
+            font-size: 30px;
+            margin-bottom: 30px;
+        }
+
+        .task-input {
+            padding: 12px;
+            width: 100%;
+            border: 2px solid purple;
+            border-radius: 8px;
+            font-size: 16px;
+            outline: none;
+        }
+
+        .add-btn {
+            padding: 12px;
+            width: 100%;
+            background: purple;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-top: 15px;
+        }
+
+        .task-list {
+            margin-top: 25px;
+            list-style: none;
+        }
+
+        .task-item {
+            background: lavender;
+            padding: 15px;
+            margin-bottom: 12px;
+            border-radius: 10px;
+            color: darkblue;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .delete-btn {
+            background: red;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <div class="container">
+
+        <h2 id="heading" class="heading">MY TODO LIST</h2>
+
+        <input type="text" id="task"
+        class="task-input" placeholder="Enter your task">
+
+        <button id="add" class="add-btn">Add Task</button>
+
+        <ul id="list" class="task-list"></ul>
+
+    </div>
+
+    <script>
+
+        let h = document.getElementById("heading");
+        let a = document.getElementById("task");
+        let b = document.getElementById("add");
+        let c = document.getElementById("list");
+
+    
+
+        document.body.style.backgroundColor = "#e9d5ff";
+
+        h.style.letterSpacing = "2px";
+
+        a.style.backgroundColor = "#faf5ff";
+
+        b.style.fontSize = "16px";
+
+        b.style.transition = "0.3s";
+
+       
+
+        b.addEventListener("click", function() {
+
+            let taskvalue = a.value.trim();
+
+            if (taskvalue === "") {
+                alert("Please enter your task");
+                return;
+            }
+
+            let li = document.createElement("li");
+
+            li.innerText = taskvalue;
+
+         
+
+            li.classList.add("task-item");
+
+
+            li.style.boxShadow = "0 3px 8px rgba(0,0,0,0.15)";
+
+            li.style.fontWeight = "bold";
+
+            let q = document.createElement("button");
+
+            q.innerText = "Delete";
+
+         
+
+            q.classList.add("delete-btn");
+
+        
+
+            q.style.fontSize = "13px";
+
+            q.style.fontWeight = "bold";
+
+            li.appendChild(q);
+
+            q.addEventListener("click", function() {
+
+                li.remove();
+
+            });
+
+            c.appendChild(li);
+
+            a.value = "";
+
+        });
+
+    </script>
+
+</body>
+</html>

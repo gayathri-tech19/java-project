@@ -1,0 +1,240 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather App</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            text-align: center;
+            padding: 30px;
+            min-height: 100vh;
+        }
+
+        .heading {
+            color: white;
+            font-size: 35px;
+            margin-bottom: 40px;
+        }
+
+        .search-box {
+            width: 250px;
+            padding: 13px;
+            border: none;
+            border-radius: 10px;
+            text-align: center;
+            font-size: 16px;
+            outline: none;
+        }
+
+        .search-btn {
+            padding: 13px 25px;
+            background-color: #ff9800;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .weather-card {
+            background-color: white;
+            width: 350px;
+            max-width: 100%;
+            margin: 40px auto;
+            padding: 25px;
+            border-radius: 20px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+            color: #333;
+        }
+
+        .weather-card h2 {
+            color: #5b4bc4;
+            margin-bottom: 15px;
+        }
+
+        .temperature {
+            font-size: 32px;
+            margin: 20px 0;
+        }
+
+        .weather-detail {
+            padding: 10px;
+            margin: 8px 0;
+            background-color: #f1f3ff;
+            border-radius: 8px;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <h1 id="heading" class="heading">🌤 Weather App</h1>
+
+    <input type="text" id="city"
+    class="search-box" placeholder="Enter City Name">
+
+    <button id="p1" class="search-btn"
+    onclick="getWeather()">Search</button>
+
+    <div id="result" class="weather-card"></div>
+
+    <script>
+
+        let h = document.getElementById("heading");
+        let b = document.getElementById("city");
+        let a = document.getElementById("p1");
+        let c = document.getElementById("result");
+
+       
+
+        document.body.style.backgroundAttachment = "fixed";
+
+        h.style.letterSpacing = "2px";
+
+        b.style.backgroundColor = "#f8f9ff";
+
+        a.style.transition = "0.3s";
+
+        c.style.transition = "0.3s";
+
+   
+
+        async function getWeather() {
+
+            let city = b.value.trim();
+
+            if (city === "") {
+
+                alert("Enter city name");
+                return;
+
+            }
+
+            try {
+
+                c.innerHTML = "Loading weather...";
+
+        
+
+                let locationResponse = await fetch(
+                    `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(city)}&count=1&language=en&format=json`
+                );
+
+                let locationData = await locationResponse.json();
+
+                if (!locationData.results ||
+                    locationData.results.length === 0) {
+
+                    c.innerHTML = "City not found";
+                    c.style.color = "red";
+                    return;
+
+                }
+
+                let latitude = locationData.results[0].latitude;
+
+                let longitude = locationData.results[0].longitude;
+
+                let cityName = locationData.results[0].name;
+
+                
+
+                let weatherResponse = await fetch(
+                    `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,relative_humidity_2m,wind_speed_10m,weather_code&timezone=auto`
+                );
+
+                let weatherData = await weatherResponse.json();
+
+                let current = weatherData.current;
+
+             
+
+                c.innerHTML = `
+
+                    <h2>${cityName}</h2>
+
+                    <h1 class="temperature">
+                        🌡 ${current.temperature_2m} °C
+                    </h1>
+
+                    <div class="weather-detail">
+
+                        <h3>💧 Humidity</h3>
+
+                        <p>${current.relative_humidity_2m}%</p>
+
+                    </div>
+
+                    <div class="weather-detail">
+
+                        <h3>💨 Wind Speed</h3>
+
+                        <p>${current.wind_speed_10m} km/h</p>
+
+                    </div>
+
+                    <div class="weather-detail">
+
+                        <h3>Weather Code</h3>
+
+                        <p>${current.weather_code}</p>
+
+                    </div>
+
+                `;
+
+               
+
+                c.style.color = "#333";
+
+                c.style.border = "2px solid #667eea";
+
+                let temp = document.querySelector(".temperature");
+
+                temp.style.color = "#ff9800";
+
+                temp.style.fontWeight = "bold";
+
+                let details = document.querySelectorAll(".weather-detail");
+
+                details.forEach(function(item) {
+
+                    item.style.borderLeft = "4px solid #667eea";
+
+                    item.style.fontWeight = "bold";
+
+                });
+
+            }
+
+            catch (error) {
+
+                c.innerHTML = "Something went wrong";
+
+                c.style.color = "red";
+
+                console.log(error);
+
+            }
+
+        }
+
+    </script>
+
+</body>
+</html>

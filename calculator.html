@@ -1,0 +1,214 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Calculator</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial;
+            background: linear-gradient(135deg, lavender, purple);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .calculator {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            width: 320px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+        }
+
+        .heading {
+            text-align: center;
+            color: purple;
+            margin-bottom: 20px;
+        }
+
+        .display {
+            width: 100%;
+            height: 55px;
+            border: 2px solid gray;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            text-align: right;
+            padding: 10px;
+            font-size: 24px;
+        }
+
+        .buttons {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+        }
+
+        .btn {
+            height: 50px;
+            border: none;
+            border-radius: 8px;
+            background-color: #eee;
+            font-size: 18px;
+            cursor: pointer;
+        }
+
+        .operator {
+            background-color: #d9c2ff;
+            color: purple;
+        }
+
+        .clear {
+            background-color: #ff7675;
+            color: white;
+        }
+
+        .equal {
+            background-color: purple;
+            color: white;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <div class="calculator">
+
+        <h1 class="heading">My Calculator</h1>
+
+        <input type="text" id="p1" class="display"
+        placeholder="0" readonly>
+
+        <div class="buttons">
+
+            <button class="btn clear" onclick="clearDisplay()">AC</button>
+
+            <button class="btn clear" onclick="deleteLast()">DEL</button>
+
+            <button class="btn operator" onclick="display('/')">/</button>
+
+            <button class="btn operator" onclick="display('*')">*</button>
+
+            <button class="btn" onclick="display('7')">7</button>
+
+            <button class="btn" onclick="display('8')">8</button>
+
+            <button class="btn" onclick="display('9')">9</button>
+
+            <button class="btn operator" onclick="display('-')">-</button>
+
+            <button class="btn" onclick="display('4')">4</button>
+
+            <button class="btn" onclick="display('5')">5</button>
+
+            <button class="btn" onclick="display('6')">6</button>
+
+            <button class="btn operator" onclick="display('+')">+</button>
+
+            <button class="btn" onclick="display('1')">1</button>
+
+            <button class="btn" onclick="display('2')">2</button>
+
+            <button class="btn" onclick="display('3')">3</button>
+
+            <button class="btn equal" onclick="calculate()">=</button>
+
+            <button class="btn" onclick="display('0')">0</button>
+
+            <button class="btn" onclick="display('.')">.</button>
+
+        </div>
+
+    </div>
+
+    <script>
+
+        let a = document.getElementById("p1");
+
+       
+
+        document.querySelector(".calculator").style.border =
+            "2px solid lavender";
+
+        a.style.backgroundColor = "#faf5ff";
+
+        a.style.letterSpacing = "2px";
+
+        let buttons = document.querySelectorAll(".btn");
+
+        buttons.forEach(function(btn) {
+
+            btn.style.transition = "0.3s";
+
+            btn.style.fontWeight = "bold";
+
+        });
+
+       
+
+        function display(value) {
+
+            a.value = a.value + value;
+
+        }
+
+
+        function clearDisplay() {
+
+            a.value = "";
+
+        }
+
+       
+
+        function deleteLast() {
+
+            a.value = a.value.slice(0, -1);
+
+        }
+
+        
+
+        function calculate() {
+
+            try {
+
+                if (a.value.trim() === "") {
+                    return;
+                }
+
+                let result = eval(a.value);
+
+                if (!Number.isFinite(result)) {
+                    a.value = "Error";
+                } else {
+                    a.value = result;
+                }
+
+            }
+
+            catch {
+
+                a.value = "Error";
+
+            }
+
+        }
+
+    </script>
+
+</body>
+</html>
